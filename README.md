@@ -1,3 +1,3 @@
 # DailyLogger
 
-Log your daily work efficienlty
+Log your daily work efficiently
