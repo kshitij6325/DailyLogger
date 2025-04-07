@@ -6,11 +6,19 @@ plugins {
     kotlin("plugin.serialization") version "2.1.20"
 }
 
+val versionFile = rootProject.file("VERSION")
+
 group = "com.kshitijsharma"
-version = "1.0-SNAPSHOT"
+version = versionFile.readText().trim()
 
 repositories {
     mavenCentral()
+}
+
+tasks.processResources {
+    from(rootProject.file("VERSION")) {
+        into("")
+    }
 }
 
 dependencies {
@@ -22,6 +30,11 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+sourceSets.main {
+    resources.srcDir("src/main/resources")
+    resources.include("VERSION")
 }
 
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
