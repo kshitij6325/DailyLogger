@@ -1,0 +1,2 @@
+#!/usr/bin/env zsh
+java -jar ~/DailyLogger/build/libs/DailyLogger-1.0-SNAPSHOT-all.jar $1 $2
