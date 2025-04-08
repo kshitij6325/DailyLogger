@@ -2,7 +2,9 @@ package com.kshitijsharma.dailylogger
 
 import DisplayAllLogsTillDate
 import com.kshitijsharma.dailylogger.business.AddNewLog
+import com.kshitijsharma.dailylogger.business.GenerateSummary
 import com.kshitijsharma.dailylogger.data.datasource.JSONFileDataSource
+import com.kshitijsharma.dailylogger.data.datasource.NormalSummaryDataSource
 import kotlinx.coroutines.*
 import java.lang.Exception
 
@@ -29,8 +31,10 @@ private val logsPath = System.getProperty("user.home") + "/dailylogger.json"
 
 private val scope by lazy { CoroutineScope(Dispatchers.Default + SupervisorJob()) }
 private val fileLogDataSource by lazy { JSONFileDataSource(logsPath) }
+private val summaryDataSource by lazy { NormalSummaryDataSource() }
 private val addNewLog by lazy { AddNewLog(fileLogDataSource) }
 private val displayAllLogsTillDate by lazy { DisplayAllLogsTillDate(fileLogDataSource) }
+private val summariseLogs by lazy { GenerateSummary(fileLogDataSource, summaryDataSource) }
 
 fun main(args: Array<String>) = runBlocking {
     val job = scope.launch {
@@ -61,7 +65,17 @@ suspend fun check(arg: Array<String>): Result<Any> {
 
         arg[0] == COMMAND.SHOW.command -> displayAllLogsTillDate.invoke()
 
+        arg[0] == COMMAND.SUMMARY.command -> handleSummary(arg)
+
         else -> Result.failure(Exception(ERROR))
+    }
+}
+
+suspend fun handleSummary(arg: Array<String>): Result<String> {
+    return if (arg.size < 2 || arg[1].toIntOrNull() == null) {
+        summariseLogs.invoke(3)
+    } else {
+        summariseLogs.invoke(arg[1].toInt())
     }
 }
 

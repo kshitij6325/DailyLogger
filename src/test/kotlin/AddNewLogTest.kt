@@ -1,22 +1,11 @@
 import com.kshitijsharma.dailylogger.business.AddNewLog
-import com.kshitijsharma.dailylogger.data.datasource.JSONFileDataSource
-import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
-import java.io.File
 import java.time.LocalDate
-import kotlin.test.AfterTest
 
-class AddNewLogTest {
-    private val testScope = TestScope()
-    private val fileDataSource = JSONFileDataSource("./dailylogger.json")
+class AddNewLogTest : BaseTest() {
     private val sut = AddNewLog(fileDataSource)
 
-
-    @AfterTest
-    fun cleanup() {
-        File("./dailylogger.json").delete()
-    }
 
     @Test
     fun `given new log from console check if it is added to the file`() = runTest {

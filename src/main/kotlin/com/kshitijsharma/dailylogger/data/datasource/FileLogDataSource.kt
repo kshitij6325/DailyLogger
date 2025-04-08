@@ -41,9 +41,9 @@ class JSONFileDataSource(private val path: String) : LogDataSource {
 
     }
 
-    override suspend fun getLogsBetween(from: Long, to: Long): Result<List<DailyLog>> {
+    override suspend fun getLogsBetween(from: LocalDate, to: LocalDate): Result<List<DailyLog>> {
         return runCatching {
-            logFile.parse().filter { it.timestamp in from..to }
+            logFile.parse().filter { LocalDate.parse(it.date) in from..to }
         }
     }
 }

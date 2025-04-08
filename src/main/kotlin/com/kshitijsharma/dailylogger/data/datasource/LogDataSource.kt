@@ -9,5 +9,5 @@ interface LogDataSource {
 
     suspend fun getLogs(): Result<List<DailyLog>>
 
-    suspend fun getLogsBetween(from: Long, to: Long): Result<List<DailyLog>>
+    suspend fun getLogsBetween(from: LocalDate, to: LocalDate): Result<List<DailyLog>>
 }
